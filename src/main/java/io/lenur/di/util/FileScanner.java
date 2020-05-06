@@ -20,21 +20,6 @@ public class FileScanner {
         final List<String> fileNames = this.getFileNames(url);
 
         return this.mapToClasses(fileNames, packageName);
-//        List<String> classes;
-//
-//        try (Stream<Path> files = Files.walk(Paths.get(url.getFile()))) {
-//            classes = files
-//                    .map(x -> x.toString().replace(url.getFile(), ""))
-//                    .filter(f -> f.endsWith(".class"))
-//                    .map(x -> {
-//                        String fileName = x.replace('/', '.');
-//                        return fileName.substring(0, fileName.length() - CLASS_EXTENSION);
-//                    })
-//                    .collect(Collectors.toList());
-//
-//        }
-//
-//        return classes;
     }
 
     private List<Class<?>> mapToClasses(List<String> fileNames, String packageName) {
@@ -59,11 +44,7 @@ public class FileScanner {
         try {
             clazz = Class.forName(className);
         } catch (ClassNotFoundException e) {
-            String message = String.format(
-                    "The class name %s was not found!",
-                    className
-            );
-            throw new DependencyException(message);
+            throw new DependencyException(e.getMessage());
         }
 
         return clazz;

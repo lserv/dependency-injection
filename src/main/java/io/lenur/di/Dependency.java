@@ -4,9 +4,9 @@ import io.lenur.di.util.FileScanner;
 import io.lenur.di.util.Injector;
 import io.lenur.di.util.Processor;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
-import java.util.HashMap;
 
 public class Dependency {
     private static Map<Class<?>, Object> instances = new HashMap<>();
