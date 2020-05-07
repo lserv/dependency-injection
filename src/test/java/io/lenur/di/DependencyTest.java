@@ -8,36 +8,32 @@ import io.lenur.di.service.Notification;
 import io.lenur.di.service.SmsNotification;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 public class DependencyTest {
-    @Before
-    public void init() {
-        Dependency.init("io.lenur.di");
-    }
+    private final PackageContext packageContext = Dependency.init("io.lenur.di");
 
     @Test
     public void injectNotification() {
-        Command command = (Command) Dependency.getInstance(SubtractCommand.class);
+        Command command = (Command) packageContext.getInstance(SubtractCommand.class);
         Assert.assertEquals(command.sendNotification(), "Sms notification");
     }
 
     @Test
     public void notInjectNotification() {
-        Command command = (Command) Dependency.getInstance(AddCommand.class);
+        Command command = (Command) packageContext.getInstance(AddCommand.class);
         Assert.assertTrue(command.sendNotification().isEmpty());
     }
 
     @Test
     public void injectCommand() {
-        Notification notification = (Notification) Dependency.getInstance(EmailNotification.class);
+        Notification notification = (Notification) packageContext.getInstance(EmailNotification.class);
         Assert.assertEquals(notification.executeCommand(1, 2), 3);
     }
 
     @Test
     public void notInjectCommand() {
-        Notification notification = (Notification) Dependency.getInstance(SmsNotification.class);
+        Notification notification = (Notification) packageContext.getInstance(SmsNotification.class);
         Assert.assertEquals(notification.executeCommand(1, 2), 0);
     }
 }
