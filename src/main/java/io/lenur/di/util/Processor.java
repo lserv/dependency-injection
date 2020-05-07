@@ -1,6 +1,6 @@
 package io.lenur.di.util;
 
-import io.lenur.di.annotation.Config;
+import io.lenur.di.annotation.Dependencies;
 import io.lenur.di.annotation.Instance;
 import io.lenur.di.exception.DependencyException;
 
@@ -20,7 +20,7 @@ public class Processor {
 
     public void process(final List<Class<?>> classes) {
         for (Class<?> clazz: classes) {
-            if (clazz.isAnnotationPresent(Config.class)) {
+            if (clazz.isAnnotationPresent(Dependencies.class)) {
                 this.processInstance(clazz);
             }
         }
