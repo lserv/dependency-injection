@@ -6,12 +6,25 @@ import io.lenur.di.exception.DependencyException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Injector {
-    public Object inject(Class<?> clazz, Map<Class<?>, Object> instances) {
+    private static final Map<Class<?>, Object> injectInstances = new HashMap<>();
+
+    public Object getInstance(Class<?> clazz, Map<Class<?>, Object> instances) {
+        if (injectInstances.containsKey(clazz)) {
+            return injectInstances.get(clazz);
+        }
+
+        this.inject(clazz, instances);
+
+        return injectInstances.get(clazz);
+    }
+
+    private void inject(Class<?> clazz, Map<Class<?>, Object> instances) {
         Field[] fields = clazz.getDeclaredFields();
-        Object object = this.getInstance(clazz);
+        Object object = this.newInstance(clazz);
 
         for (Field field: fields) {
             Object inject = instances.get(field.getType());
@@ -25,10 +38,10 @@ public class Injector {
             }
         }
 
-        return object;
+        injectInstances.put(clazz, object);
     }
 
-    private Object getInstance(Class<?> clazz) {
+    private Object newInstance(Class<?> clazz) {
         try {
             Constructor<?> constructor = clazz.getDeclaredConstructor();
             return constructor.newInstance();
