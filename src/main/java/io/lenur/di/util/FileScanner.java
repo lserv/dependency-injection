@@ -68,11 +68,11 @@ public class FileScanner {
     private URL obtainPath(String packageName) {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 
-        final String packageTrans = packageName.replace('.', '/');
-        final URL url = classLoader.getResource(packageTrans);
+        String packageNameLoad = packageName.replace('.', '/');
+        URL url = classLoader.getResource(packageNameLoad);
 
         if (url == null) {
-            final String message = String.format("Cannot locate the package name %s !", packageName);
+            String message = String.format("Cannot locate the package name %s!", packageName);
             throw new DependencyException(message);
         }
 
