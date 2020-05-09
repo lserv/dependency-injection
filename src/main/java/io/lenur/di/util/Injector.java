@@ -3,54 +3,38 @@ package io.lenur.di.util;
 import io.lenur.di.annotation.Inject;
 import io.lenur.di.exception.DependencyException;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Injector {
-    private static final Map<Class<?>, Object> injectInstances = new HashMap<>();
+    private static final Map<Object, Object> injectedObjects = new HashMap<>();
 
-    public Object getInstance(Class<?> clazz, Map<Class<?>, Object> instances) {
-        if (injectInstances.containsKey(clazz)) {
-            return injectInstances.get(clazz);
+    public Object getInstance(Object object, Map<Class<?>, Object> dependencies) {
+        if (injectedObjects.containsKey(object)) {
+            return injectedObjects.get(object);
         }
 
-        this.inject(clazz, instances);
+        this.inject(object, dependencies);
 
-        return injectInstances.get(clazz);
+        return injectedObjects.get(object);
     }
 
-    private void inject(Class<?> clazz, Map<Class<?>, Object> instances) {
-        Field[] fields = clazz.getDeclaredFields();
-        Object object = this.newInstance(clazz);
+    private void inject(Object object, Map<Class<?>, Object> dependencies) {
+        Field[] fields = object.getClass().getDeclaredFields();
 
         for (Field field: fields) {
-            Object inject = instances.get(field.getType());
-            if (field.isAnnotationPresent(Inject.class) && null != inject) {
+            Object dependency = dependencies.get(field.getType());
+            if (field.isAnnotationPresent(Inject.class) && null != dependency) {
                 try {
                     field.setAccessible(true);
-                    field.set(object, inject);
+                    field.set(object, dependency);
                 } catch (IllegalAccessException e) {
                     throw new DependencyException(e.getMessage());
                 }
             }
         }
 
-        injectInstances.put(clazz, object);
-    }
-
-    private Object newInstance(Class<?> clazz) {
-        try {
-            Constructor<?> constructor = clazz.getDeclaredConstructor();
-            return constructor.newInstance();
-        } catch (NoSuchMethodException
-                | IllegalAccessException
-                | InvocationTargetException
-                | InstantiationException e
-        ) {
-            throw new DependencyException(e.getMessage());
-        }
+        injectedObjects.put(object, object);
     }
 }

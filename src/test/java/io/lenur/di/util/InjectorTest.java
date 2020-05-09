@@ -12,12 +12,12 @@ import java.util.Map;
 
 public class InjectorTest {
     @Test
-    public void processClasses() {
-        Map<Class<?>, Object> instancesToInject = new HashMap<>();
-        instancesToInject.put(Command.class, new AddCommand());
+    public void injectObject() {
+        Map<Class<?>, Object> dependencies = new HashMap<>();
+        dependencies.put(Command.class, new AddCommand());
 
         Injector injector = new Injector();
-        Notification notification = (Notification) injector.getInstance(EmailNotification.class, instancesToInject);
+        Notification notification = (Notification) injector.getInstance(new EmailNotification(), dependencies);
         Assert.assertEquals(notification.executeCommand(1, 2), 3);
     }
 }

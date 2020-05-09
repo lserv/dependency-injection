@@ -21,11 +21,11 @@ public class ProcessorTest {
 
         Processor processor = new Processor();
         processor.process(classes);
-        Map<Class<?>, Object> instances = processor.getInstances();
+        Map<Class<?>, Object> dependencies = processor.getDependencies();
 
-        Assert.assertEquals(instances.size(), 2);
-        Assert.assertTrue(instances.get(Notification.class) instanceof SmsNotification);
-        Assert.assertTrue(instances.get(Command.class) instanceof AddCommand);
+        Assert.assertEquals(dependencies.size(), 2);
+        Assert.assertTrue(dependencies.get(Notification.class) instanceof SmsNotification);
+        Assert.assertTrue(dependencies.get(Command.class) instanceof AddCommand);
     }
 
     @Test
@@ -34,7 +34,7 @@ public class ProcessorTest {
 
         Processor processor = new Processor();
         processor.process(classes);
-        Map<Class<?>, Object> instances = processor.getInstances();
+        Map<Class<?>, Object> instances = processor.getDependencies();
 
         Assert.assertEquals(instances.size(), 0);
     }

@@ -12,10 +12,10 @@ import java.util.List;
 import java.util.Map;
 
 public class Processor {
-    private final Map<Class<?>, Object> instances = new HashMap<>();
+    private final Map<Class<?>, Object> dependencies = new HashMap<>();
 
-    public Map<Class<?>, Object> getInstances() {
-        return instances;
+    public Map<Class<?>, Object> getDependencies() {
+        return dependencies;
     }
 
     public void process(final List<Class<?>> classes) {
@@ -35,7 +35,7 @@ public class Processor {
 
             for (Method method: methods) {
                 if (method.isAnnotationPresent(Instance.class)) {
-                    instances.put(method.getReturnType(), method.invoke(config));
+                    dependencies.put(method.getReturnType(), method.invoke(config));
                 }
             }
         } catch (NoSuchMethodException
