@@ -6,7 +6,7 @@
 
     <groupId>io.lenur</groupId>
     <artifactId>di</artifactId>
-    <version>v1.0</version>
+    <version>v1.1</version>
 
     <properties>
         <jdk.version>11</jdk.version>
