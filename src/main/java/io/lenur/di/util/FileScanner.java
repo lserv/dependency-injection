@@ -13,8 +13,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class FileScanner {
-    private static final int CLASS_EXTENSION = 6;
-
     public List<Class<?>> getClasses(String packageName) {
         final URL url = this.obtainPath(packageName);
         final List<String> fileNames = this.getFileNames(url);
@@ -24,12 +22,11 @@ public class FileScanner {
 
     private List<Class<?>> mapToClasses(List<String> fileNames, String packageName) {
         final List<Class<?>> classes = new LinkedList<>();
-        for (String fileName: fileNames) {
-            String modified = fileName
-                    .replace('/', '.')
-                    .substring(0, fileName.length() - CLASS_EXTENSION);
 
-            Class<?> clazz = loadClass(packageName + modified);
+        for (String fileName: fileNames) {
+
+            String className = ClassName.normalize(packageName, fileName);
+            Class<?> clazz = loadClass(className);
 
             if (clazz != null && !clazz.isInterface()) {
                 classes.add(clazz);
