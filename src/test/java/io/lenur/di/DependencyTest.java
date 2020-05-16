@@ -20,7 +20,9 @@ public class DependencyTest {
     @Test
     public void notInjectNotification() {
         Command command = (Command) packageContext.getInstance(Command.class);
-        Assert.assertTrue(command.sendNotification().isEmpty());
+        String notification = command.sendNotification();
+
+        Assert.assertEquals("Email notification 3", notification);
     }
 
     @Test(expected = DependencyException.class)

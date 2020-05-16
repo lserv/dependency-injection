@@ -31,7 +31,7 @@ public class PackageContext {
 
     private Object getObjectInstance(Class<?> clazz) {
         if (!dependencies.containsKey(clazz)) {
-            String msg = String.format("The class %s is not defined in dependecies!", clazz);
+            String msg = String.format("The class %s is not defined in dependencies!", clazz);
             throw new DependencyException(msg);
         }
 

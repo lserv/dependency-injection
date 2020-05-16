@@ -23,7 +23,7 @@ public class ProcessorTest {
         processor.process(classes);
         Map<Class<?>, Object> dependencies = processor.getDependencies();
 
-        Assert.assertEquals(dependencies.size(), 2);
+        Assert.assertEquals(dependencies.size(), 3);
         Assert.assertTrue(dependencies.get(Notification.class) instanceof SmsNotification);
         Assert.assertTrue(dependencies.get(Command.class) instanceof AddCommand);
     }
